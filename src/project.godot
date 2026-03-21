@@ -1,0 +1,59 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
+[application]
+
+config/name="GAME_NAME"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Utility="*res://autoloads/utility.gd"
+Events="*res://autoloads/event_bus.tscn"
+Create="*res://autoloads/factory.tscn"
+Audio="*res://autoloads/audio_manager.tscn"
+NodeEffects="*res://autoloads/node_effects.tscn"
+Settings="*res://autoloads/settings.tscn"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/resizable=false
+window/stretch/mode="viewport"
+
+[dotnet]
+
+project/assembly_name="GAME_NAME"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/theme_gen_save_sync/plugin.cfg")
+
+[gui]
+
+theme/custom="uid://cwi2l6qtt6la6"
+
+[importer_defaults]
+
+texture={
+"mipmaps/generate": true
+}
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
