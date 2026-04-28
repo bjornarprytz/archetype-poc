@@ -7,10 +7,10 @@ on:
       - "v*"
 
 env:
-  ITCHIO_USERNAME: [ITCHIO_USERNAME]
-  GAME_NAME: [GAME_NAME]
+  ITCHIO_USERNAME: thewarlock
+  GAME_NAME: archetype-poc
   PROJECT_PATH: "./src/"
-  GODOT_VERSION: [GODOT_VERSION]
+  GODOT_VERSION: 4.6.1-stable
 
 jobs:
   export-game:

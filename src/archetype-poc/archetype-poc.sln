@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archetype-poc", "archetype-poc.csproj", "{6C13FEE4-38FD-4A13-A88C-51A36A1321F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "game-definition", "..\game-definition\game-definition.csproj", "{93AC508E-05AC-4354-9D4C-22F971F36518}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C13FEE4-38FD-4A13-A88C-51A36A1321F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C13FEE4-38FD-4A13-A88C-51A36A1321F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C13FEE4-38FD-4A13-A88C-51A36A1321F2}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{6C13FEE4-38FD-4A13-A88C-51A36A1321F2}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{6C13FEE4-38FD-4A13-A88C-51A36A1321F2}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{6C13FEE4-38FD-4A13-A88C-51A36A1321F2}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{93AC508E-05AC-4354-9D4C-22F971F36518}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93AC508E-05AC-4354-9D4C-22F971F36518}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93AC508E-05AC-4354-9D4C-22F971F36518}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93AC508E-05AC-4354-9D4C-22F971F36518}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{93AC508E-05AC-4354-9D4C-22F971F36518}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{93AC508E-05AC-4354-9D4C-22F971F36518}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+EndGlobal

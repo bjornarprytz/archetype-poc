@@ -1,0 +1,68 @@
+{
+  "Name": "core",
+  "FormatVersion": 1,
+  "Cards": [
+    {
+      "Name": "Swordsman",
+      "StaticProperties": {
+        "health": 5,
+        "cost": 2
+      },
+      "PrimaryEffect": {
+        "Steps": [
+          {
+            "KeywordName": "strike",
+            "ArgNodes": [
+              {
+                "$type": "ref",
+                "Name": "source"
+              },
+              {
+                "$type": "lit",
+                "t": "d",
+                "v": 3
+              }
+            ],
+            "BindTo": null
+          }
+        ]
+      },
+      "AdditionalEffects": [],
+      "StaticEffects": [],
+      "ActivationCondition": null,
+      "Cost": null,
+      "StateMapDeclarations": null
+    },
+    {
+      "Name": "Healer",
+      "StaticProperties": {
+        "health": 3,
+        "cost": 1
+      },
+      "PrimaryEffect": {
+        "Steps": [
+          {
+            "KeywordName": "heal",
+            "ArgNodes": [
+              {
+                "$type": "ref",
+                "Name": "source"
+              },
+              {
+                "$type": "lit",
+                "t": "d",
+                "v": 2
+              }
+            ],
+            "BindTo": null
+          }
+        ]
+      },
+      "AdditionalEffects": [],
+      "StaticEffects": [],
+      "ActivationCondition": null,
+      "Cost": null,
+      "StateMapDeclarations": null
+    }
+  ]
+}

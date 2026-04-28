@@ -1,0 +1,16 @@
+<Project Sdk="Godot.NET.Sdk/4.6.1">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>archetypepoc</RootNamespace>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Archetype.Core"   Version="0.4.0-alpha2" />
+    <PackageReference Include="Archetype.Engine" Version="0.4.0-alpha2" />
+    <PackageReference Include="Archetype.Text"   Version="0.4.0-alpha2" />
+    <PackageReference Include="Archetype.Build"  Version="0.4.0-alpha2" />
+  </ItemGroup>
+</Project>

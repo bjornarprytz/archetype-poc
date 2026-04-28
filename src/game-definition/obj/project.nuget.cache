@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "3qyWaz1dFS0=",
+  "success": true,
+  "projectFilePath": "/home/bgp/source/archetype-poc/src/game-definition/game-definition.csproj",
+  "expectedPackageFiles": [
+    "/home/bgp/.nuget/packages/archetype.build/0.4.0-alpha2/archetype.build.0.4.0-alpha2.nupkg.sha512",
+    "/home/bgp/.nuget/packages/archetype.build.extensions/0.4.0-alpha2/archetype.build.extensions.0.4.0-alpha2.nupkg.sha512",
+    "/home/bgp/.nuget/packages/archetype.core/0.4.0-alpha2/archetype.core.0.4.0-alpha2.nupkg.sha512",
+    "/home/bgp/.nuget/packages/archetype.engine/0.4.0-alpha2/archetype.engine.0.4.0-alpha2.nupkg.sha512",
+    "/home/bgp/.nuget/packages/archetype.text/0.4.0-alpha2/archetype.text.0.4.0-alpha2.nupkg.sha512"
+  ],
+  "logs": []
+}

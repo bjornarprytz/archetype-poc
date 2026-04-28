@@ -1,6 +1,6 @@
-# {jamName}
+# archetype-poc
 
-game on itch.io: [link](https://{itchioUsername}.itch.io/{jamName})
+game on itch.io: [link](https://thewarlock.itch.io/archetype-poc)
 
 ## TODO
 
@@ -9,14 +9,14 @@ game on itch.io: [link](https://{itchioUsername}.itch.io/{jamName})
 
 - Import the project into Godot
 
-- Setup itch.io page for {jamName} [link](https://itch.io/game/new)
-  - Set Project URL to {jamName} (can be changed later)
+- Setup itch.io page for archetype-poc [link](https://itch.io/game/new)
+  - Set Project URL to archetype-poc (can be changed later)
   - Set Kind to HTML
   - Hit the Save button
 - Get Butler API key from [itch.io](https://itch.io/user/settings/api-keys)
-- Add key to GitHub repository secrets as BUTLER_API_KEY [link](https://github.com/{githubUsername}/{jamName}/settings/secrets/actions)
+- Add key to GitHub repository secrets as BUTLER_API_KEY [link](https://github.com/bjornarprytz/archetype-poc/settings/secrets/actions)
 - Push release with `./scripts/push_release.sh`
-- Go [here](https://{itchioUsername}.itch.io/{jamName}/edit) and edit game:
+- Go [here](https://thewarlock.itch.io/archetype-poc/edit) and edit game:
   - Check "This file will be played in the browser"
   - Set viewport dimensions (normal: 1280x720)
   - Check SharedArrayBuffer

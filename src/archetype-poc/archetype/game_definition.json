@@ -1,0 +1,884 @@
+{
+  "Keywords": {
+    "modify-accumulator": {
+      "Name": "modify-accumulator",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 8,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "delta",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 9,
+      "Description": "Adds delta to a named accumulator on the target atom.",
+      "Body": null,
+      "PrimitiveSentinel": "modify-accumulator",
+      "TextTemplate": "modify {name} on {atom} by {delta}",
+      "IsPrimitive": true
+    },
+    "apply-modifier": {
+      "Name": "apply-modifier",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 8,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "kind",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "value",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "lifetime",
+          "Type": 10,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 9,
+      "Description": "Applies a modifier contribution to a property on the target atom.",
+      "Body": null,
+      "PrimitiveSentinel": "apply-modifier",
+      "TextTemplate": "apply modifier to {name} on {atom}",
+      "IsPrimitive": true
+    },
+    "remove-modifier": {
+      "Name": "remove-modifier",
+      "Parameters": [
+        {
+          "Name": "id",
+          "Type": 9,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Removes a modifier contribution by ID.",
+      "Body": null,
+      "PrimitiveSentinel": "remove-modifier",
+      "TextTemplate": "remove modifier {id}",
+      "IsPrimitive": true
+    },
+    "apply-condition": {
+      "Name": "apply-condition",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 7,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "lifetime",
+          "Type": 10,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 9,
+      "Description": "Applies a condition contribution to the target atom.",
+      "Body": null,
+      "PrimitiveSentinel": "apply-condition",
+      "TextTemplate": "apply condition {name} to {atom}",
+      "IsPrimitive": true
+    },
+    "remove-condition": {
+      "Name": "remove-condition",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 7,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Removes all condition contributions of the given name from the target atom.",
+      "Body": null,
+      "PrimitiveSentinel": "remove-condition",
+      "TextTemplate": "remove condition {name} from {atom}",
+      "IsPrimitive": true
+    },
+    "create-card": {
+      "Name": "create-card",
+      "Parameters": [
+        {
+          "Name": "zone",
+          "Type": 2,
+          "AtomKindRestriction": [
+            1
+          ]
+        },
+        {
+          "Name": "definition-name",
+          "Type": 12,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "owner",
+          "Type": 3,
+          "AtomKindRestriction": [
+            2
+          ]
+        }
+      ],
+      "ReturnType": 0,
+      "Description": "Instantiates a new card from the named definition and places it in the specified zone.",
+      "Body": null,
+      "PrimitiveSentinel": "create-card",
+      "TextTemplate": "create {definition-name} in {zone}",
+      "IsPrimitive": true
+    },
+    "copy-card": {
+      "Name": "copy-card",
+      "Parameters": [
+        {
+          "Name": "source",
+          "Type": 1,
+          "AtomKindRestriction": [
+            0
+          ]
+        },
+        {
+          "Name": "destination-zone",
+          "Type": 2,
+          "AtomKindRestriction": [
+            1
+          ]
+        },
+        {
+          "Name": "owner",
+          "Type": 3,
+          "AtomKindRestriction": [
+            2
+          ]
+        }
+      ],
+      "ReturnType": 0,
+      "Description": "Instantiates a card using the same definition as source; places it in destination-zone with no runtime state from source.",
+      "Body": null,
+      "PrimitiveSentinel": "copy-card",
+      "TextTemplate": "copy {source} to {destination-zone}",
+      "IsPrimitive": true
+    },
+    "create-zone": {
+      "Name": "create-zone",
+      "Parameters": [
+        {
+          "Name": "owner",
+          "Type": 3,
+          "AtomKindRestriction": [
+            2
+          ]
+        },
+        {
+          "Name": "definition-name",
+          "Type": 13,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 0,
+      "Description": "Instantiates a new zone from the named definition.",
+      "Body": null,
+      "PrimitiveSentinel": "create-zone",
+      "TextTemplate": "create zone {definition-name} for {owner}",
+      "IsPrimitive": true
+    },
+    "move-card": {
+      "Name": "move-card",
+      "Parameters": [
+        {
+          "Name": "card",
+          "Type": 1,
+          "AtomKindRestriction": [
+            0
+          ]
+        },
+        {
+          "Name": "destination",
+          "Type": 2,
+          "AtomKindRestriction": [
+            1
+          ]
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Moves a card to the specified destination zone, logging a move-card event with origin captured before mutation.",
+      "Body": null,
+      "PrimitiveSentinel": "move-card",
+      "TextTemplate": "move {card} to {destination}",
+      "IsPrimitive": true
+    },
+    "get-state": {
+      "Name": "get-state",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 8,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns the accumulated value of the named property on the atom.",
+      "Body": null,
+      "PrimitiveSentinel": "get-state",
+      "TextTemplate": "{atom}.{name}",
+      "IsPrimitive": true
+    },
+    "get-property": {
+      "Name": "get-property",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 8,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns the modifier-adjusted value of the named property on the atom.",
+      "Body": null,
+      "PrimitiveSentinel": "get-property",
+      "TextTemplate": "{atom}.{name}",
+      "IsPrimitive": true
+    },
+    "in-zone": {
+      "Name": "in-zone",
+      "Parameters": [
+        {
+          "Name": "card",
+          "Type": 1,
+          "AtomKindRestriction": [
+            0
+          ]
+        },
+        {
+          "Name": "zone",
+          "Type": 2,
+          "AtomKindRestriction": [
+            1
+          ]
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns true if the card currently occupies the specified zone.",
+      "Body": null,
+      "PrimitiveSentinel": "in-zone",
+      "TextTemplate": "{card} in {zone}",
+      "IsPrimitive": true
+    },
+    "has-condition": {
+      "Name": "has-condition",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 7,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns true if the named condition is active on the atom.",
+      "Body": null,
+      "PrimitiveSentinel": "has-condition",
+      "TextTemplate": "{atom} has {name}",
+      "IsPrimitive": true
+    },
+    "owner-of": {
+      "Name": "owner-of",
+      "Parameters": [
+        {
+          "Name": "atom",
+          "Type": 0,
+          "AtomKindRestriction": [
+            0,
+            1
+          ]
+        }
+      ],
+      "ReturnType": 0,
+      "Description": "Returns the owner of a card or zone atom.",
+      "Body": null,
+      "PrimitiveSentinel": "owner-of",
+      "TextTemplate": "owner of {atom}",
+      "IsPrimitive": true
+    },
+    "add": {
+      "Name": "add",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns a \u002B b.",
+      "Body": null,
+      "PrimitiveSentinel": "add",
+      "TextTemplate": "{a} \u002B {b}",
+      "IsPrimitive": true
+    },
+    "subtract": {
+      "Name": "subtract",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns a - b.",
+      "Body": null,
+      "PrimitiveSentinel": "subtract",
+      "TextTemplate": "{a} - {b}",
+      "IsPrimitive": true
+    },
+    "multiply": {
+      "Name": "multiply",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns a \u00D7 b.",
+      "Body": null,
+      "PrimitiveSentinel": "multiply",
+      "TextTemplate": "{a} \u00D7 {b}",
+      "IsPrimitive": true
+    },
+    "max": {
+      "Name": "max",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns the larger of a and b.",
+      "Body": null,
+      "PrimitiveSentinel": "max",
+      "TextTemplate": "max({a}, {b})",
+      "IsPrimitive": true
+    },
+    "min": {
+      "Name": "min",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns the smaller of a and b.",
+      "Body": null,
+      "PrimitiveSentinel": "min",
+      "TextTemplate": "min({a}, {b})",
+      "IsPrimitive": true
+    },
+    "and": {
+      "Name": "and",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 6,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 6,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns a AND b.",
+      "Body": null,
+      "PrimitiveSentinel": "and",
+      "TextTemplate": "{a} and {b}",
+      "IsPrimitive": true
+    },
+    "or": {
+      "Name": "or",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 6,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 6,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns a OR b.",
+      "Body": null,
+      "PrimitiveSentinel": "or",
+      "TextTemplate": "{a} or {b}",
+      "IsPrimitive": true
+    },
+    "not": {
+      "Name": "not",
+      "Parameters": [
+        {
+          "Name": "p",
+          "Type": 6,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns NOT p.",
+      "Body": null,
+      "PrimitiveSentinel": "not",
+      "TextTemplate": "not {p}",
+      "IsPrimitive": true
+    },
+    "less-than": {
+      "Name": "less-than",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns a \u003C b.",
+      "Body": null,
+      "PrimitiveSentinel": "less-than",
+      "TextTemplate": "{a} \u003C {b}",
+      "IsPrimitive": true
+    },
+    "greater-than": {
+      "Name": "greater-than",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns a \u003E b.",
+      "Body": null,
+      "PrimitiveSentinel": "greater-than",
+      "TextTemplate": "{a} \u003E {b}",
+      "IsPrimitive": true
+    },
+    "at-least": {
+      "Name": "at-least",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns a \u003E= b.",
+      "Body": null,
+      "PrimitiveSentinel": "at-least",
+      "TextTemplate": "{a} \u003E= {b}",
+      "IsPrimitive": true
+    },
+    "at-most": {
+      "Name": "at-most",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns a \u003C= b.",
+      "Body": null,
+      "PrimitiveSentinel": "at-most",
+      "TextTemplate": "{a} \u003C= {b}",
+      "IsPrimitive": true
+    },
+    "equal-to": {
+      "Name": "equal-to",
+      "Parameters": [
+        {
+          "Name": "a",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "b",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Returns a == b.",
+      "Body": null,
+      "PrimitiveSentinel": "equal-to",
+      "TextTemplate": "{a} = {b}",
+      "IsPrimitive": true
+    },
+    "random-int": {
+      "Name": "random-int",
+      "Parameters": [
+        {
+          "Name": "min",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "max",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "Returns a uniformly random integer in [min, max] inclusive.",
+      "Body": null,
+      "PrimitiveSentinel": "random-int",
+      "TextTemplate": "random({min} to {max})",
+      "IsPrimitive": true
+    },
+    "event-arg": {
+      "Name": "event-arg",
+      "Parameters": [
+        {
+          "Name": "event",
+          "Type": 14,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "name",
+          "Type": 8,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 0,
+      "Description": "Extracts a named bound argument from a GameEvent reference.",
+      "Body": null,
+      "PrimitiveSentinel": "event-arg",
+      "TextTemplate": "event.{name}",
+      "IsPrimitive": true
+    },
+    "session": {
+      "Name": "session",
+      "Parameters": [],
+      "ReturnType": 0,
+      "Description": "Returns the singleton session atom.",
+      "Body": null,
+      "PrimitiveSentinel": "session",
+      "TextTemplate": "session",
+      "IsPrimitive": true
+    },
+    "get-atoms-in-zone": {
+      "Name": "get-atoms-in-zone",
+      "Parameters": [
+        {
+          "Name": "zone",
+          "Type": 2,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 15,
+      "Description": "Returns all atoms currently in the given zone.",
+      "Body": null,
+      "PrimitiveSentinel": "get-atoms-in-zone",
+      "TextTemplate": "atoms in {zone}",
+      "IsPrimitive": true
+    },
+    "player-by-name": {
+      "Name": "player-by-name",
+      "Parameters": [
+        {
+          "Name": "name",
+          "Type": 8,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 3,
+      "Description": "Returns the player atom registered under the given name string.",
+      "Body": null,
+      "PrimitiveSentinel": "player-by-name",
+      "TextTemplate": "player {name}",
+      "IsPrimitive": true
+    },
+    "declare-winner": {
+      "Name": "declare-winner",
+      "Parameters": [
+        {
+          "Name": "player",
+          "Type": 3,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Declares the given player as the winner, ending the game.",
+      "Body": null,
+      "PrimitiveSentinel": "declare-winner",
+      "TextTemplate": "declare winner: {player}",
+      "IsPrimitive": true
+    },
+    "declare-draw": {
+      "Name": "declare-draw",
+      "Parameters": [],
+      "ReturnType": 6,
+      "Description": "Declares a draw, ending the game with no winner.",
+      "Body": null,
+      "PrimitiveSentinel": "declare-draw",
+      "TextTemplate": "declare draw",
+      "IsPrimitive": true
+    },
+    "assert": {
+      "Name": "assert",
+      "Parameters": [
+        {
+          "Name": "condition",
+          "Type": 6,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "on_fail",
+          "Type": 5,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "notify",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 6,
+      "Description": "Evaluates condition; on failure behaves according to on_fail/notify flags. Never appends to event log.",
+      "Body": null,
+      "PrimitiveSentinel": "assert",
+      "TextTemplate": "assert {condition}",
+      "IsPrimitive": true
+    },
+    "strike": {
+      "Name": "strike",
+      "Parameters": [
+        {
+          "Name": "target",
+          "Type": 1,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "power",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "strike",
+      "Body": {
+        "$type": "inv",
+        "KeywordName": "modify-accumulator",
+        "Args": [
+          {
+            "$type": "ref",
+            "Name": "target"
+          },
+          {
+            "$type": "lit",
+            "t": "s",
+            "v": "health"
+          },
+          {
+            "$type": "inv",
+            "KeywordName": "multiply",
+            "Args": [
+              {
+                "$type": "ref",
+                "Name": "power"
+              },
+              {
+                "$type": "lit",
+                "t": "d",
+                "v": -1
+              }
+            ]
+          }
+        ]
+      },
+      "PrimitiveSentinel": null,
+      "TextTemplate": "Deal {power} damage to {target}",
+      "IsPrimitive": false
+    },
+    "heal": {
+      "Name": "heal",
+      "Parameters": [
+        {
+          "Name": "target",
+          "Type": 1,
+          "AtomKindRestriction": null
+        },
+        {
+          "Name": "amount",
+          "Type": 5,
+          "AtomKindRestriction": null
+        }
+      ],
+      "ReturnType": 5,
+      "Description": "heal",
+      "Body": {
+        "$type": "inv",
+        "KeywordName": "modify-accumulator",
+        "Args": [
+          {
+            "$type": "ref",
+            "Name": "target"
+          },
+          {
+            "$type": "lit",
+            "t": "s",
+            "v": "health"
+          },
+          {
+            "$type": "ref",
+            "Name": "amount"
+          }
+        ]
+      },
+      "PrimitiveSentinel": null,
+      "TextTemplate": "Restore {amount} health to {target}",
+      "IsPrimitive": false
+    }
+  },
+  "CardDefinitions": {},
+  "ZoneDefinitions": {
+    "hand": {
+      "Name": "hand",
+      "StaticProperties": {},
+      "StateMapDeclarations": null
+    },
+    "board": {
+      "Name": "board",
+      "StaticProperties": {},
+      "StateMapDeclarations": null
+    }
+  },
+  "StateBasedRules": [],
+  "Phases": [
+    {
+      "Name": "main",
+      "Init": null,
+      "Cleanup": null
+    }
+  ],
+  "ActionRules": {},
+  "TriggerResolutionOrder": 0,
+  "PlayerDefinitions": {
+    "alice": {
+      "StaticProperties": {
+        "health": 20
+      },
+      "StateMapDeclarations": null
+    },
+    "bob": {
+      "StaticProperties": {
+        "health": 20
+      },
+      "StateMapDeclarations": null
+    }
+  },
+  "InitManifest": {
+    "Zones": [],
+    "Cards": [],
+    "PlayerStates": []
+  },
+  "PlayableZoneNames": null,
+  "Id": "archetype-poc",
+  "SessionStateMapDeclarations": null
+}

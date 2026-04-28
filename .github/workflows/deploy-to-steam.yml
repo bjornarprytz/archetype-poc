@@ -7,9 +7,9 @@ on:
       - "steam*"
 
 env:
-  GAME_NAME: [GAME_NAME]
+  GAME_NAME: archetype-poc
   PROJECT_PATH: "./src/"
-  GODOT_VERSION: [GODOT_VERSION]
+  GODOT_VERSION: 4.6.1-stable
 
 jobs:
   export-game:
