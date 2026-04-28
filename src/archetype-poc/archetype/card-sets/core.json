@@ -5,7 +5,6 @@
     {
       "Name": "Swordsman",
       "StaticProperties": {
-        "health": 5,
         "cost": 2
       },
       "PrimaryEffect": {
@@ -31,12 +30,17 @@
       "StaticEffects": [],
       "ActivationCondition": null,
       "Cost": null,
-      "StateMapDeclarations": null
+      "StateMapDeclarations": [
+        {
+          "Name": "health",
+          "FieldType": 0,
+          "TextTemplate": null
+        }
+      ]
     },
     {
       "Name": "Healer",
       "StaticProperties": {
-        "health": 3,
         "cost": 1
       },
       "PrimaryEffect": {
@@ -62,7 +66,13 @@
       "StaticEffects": [],
       "ActivationCondition": null,
       "Cost": null,
-      "StateMapDeclarations": null
+      "StateMapDeclarations": [
+        {
+          "Name": "health",
+          "FieldType": 0,
+          "TextTemplate": null
+        }
+      ]
     }
   ]
 }

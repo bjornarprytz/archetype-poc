@@ -18,12 +18,12 @@ var _node: ArchetypeNode
 ## Registers [param node] and connects its lifecycle signals.
 ## Call this from your main scene's [method Node._ready], then call [method start].
 func register(node: ArchetypeNode) -> void:
-	_node = node
-	_node.ActionRequested.connect(_on_action_requested)
-	_node.ActionResolved.connect(_on_action_resolved)
-	_node.PromptRequested.connect(_on_prompt_requested)
-	_node.GameOver.connect(_on_game_over)
-	_node.GameError.connect(_on_game_error)
+    _node = node
+    _node.ActionRequested.connect(_on_action_requested)
+    _node.ActionResolved.connect(_on_action_resolved)
+    _node.PromptRequested.connect(_on_prompt_requested)
+    _node.GameOver.connect(_on_game_over)
+    _node.GameError.connect(_on_game_error)
 
 ## Emitted when a player must choose an action.
 ## [param player_name] identifies which player is acting.
@@ -45,49 +45,49 @@ signal game_over(winner_name: String)
 signal game_error(message: String)
 
 func _on_action_requested(player_name: String, available: Dictionary) -> void:
-	action_requested.emit(player_name, available)
+    action_requested.emit(player_name, available)
 
 func _on_action_resolved() -> void:
-	action_resolved.emit()
+    action_resolved.emit()
 
 func _on_prompt_requested(player_name: String, prompt_type: String, context: Dictionary) -> void:
-	prompt_requested.emit(player_name, prompt_type, context)
+    prompt_requested.emit(player_name, prompt_type, context)
 
 func _on_game_over(winner_name: String) -> void:
-	game_over.emit(winner_name)
+    game_over.emit(winner_name)
 
 func _on_game_error(message: String) -> void:
-	game_error.emit(message)
+    game_error.emit(message)
 
 ## Starts the game, loading definition and card sets from the generated
 ## [code]res://archetype/[/code] files. Call after [method register].
 ## Pass explicit paths to override the defaults.
 func start(host_manifest: Dictionary = {},
-		definition_path: String = "res://archetype/game_definition.json",
-		card_set_paths: Array = []) -> void:
-	_node.StartGame(host_manifest, definition_path, card_set_paths)
+        definition_path: String = "res://archetype/game_definition.json",
+        card_set_paths: Array = []) -> void:
+    _node.StartGame(host_manifest, definition_path, card_set_paths)
 
 ## Submits a pass action for [param player_name].
 func submit_pass(player_name: String) -> void:
-	_node.SubmitPass(player_name)
+    _node.SubmitPass(player_name)
 
 ## Submits a play-card action for [param player_name].
 ## [param card_atom_id] is the atom ID from [signal action_requested].
 ## [param cost_choices] provides any required cost selections.
 func submit_play_card(player_name: String, card_atom_id: int, cost_choices: Dictionary = {}) -> void:
-	_node.SubmitPlayCard(player_name, card_atom_id, cost_choices)
+    _node.SubmitPlayCard(player_name, card_atom_id, cost_choices)
 
 ## Submits an activate-ability action for [param player_name].
 ## [param source_atom_id] is the atom ID of the source card.
 ## [param effect_name] identifies which ability to activate.
 ## [param cost_choices] provides any required cost selections.
 func submit_activate_ability(player_name: String, source_atom_id: int, effect_name: String, cost_choices: Dictionary = {}) -> void:
-	_node.SubmitActivateAbility(player_name, source_atom_id, effect_name, cost_choices)
+    _node.SubmitActivateAbility(player_name, source_atom_id, effect_name, cost_choices)
 
 ## Submits a response to a pending prompt for [param player_name].
 ## [param response] is a dictionary of chosen values keyed by prompt field name.
 func submit_prompt_response(player_name: String, response: Dictionary) -> void:
-	_node.SubmitPromptResponse(player_name, response)
+    _node.SubmitPromptResponse(player_name, response)
 
 ## Returns the named accumulator value for [param atom_id].
 ## Returns 0.0 before the game starts or after it ends.
@@ -119,23 +119,23 @@ func get_atoms(kind: int) -> Array:                            return _node.GetA
 
 ## Returns a [CardAtom] view for [param atom_id].
 func get_card(atom_id: int) -> CardAtom:
-	return CardAtom._create(atom_id)
+    return CardAtom._create(atom_id)
 
 ## Returns a [ZoneAtom] view for [param atom_id].
 func get_zone_atom(atom_id: int) -> ZoneAtom:
-	return ZoneAtom._create(atom_id)
+    return ZoneAtom._create(atom_id)
 
 ## Returns a [PlayerAtom] view for [param atom_id].
 func get_player(atom_id: int) -> PlayerAtom:
-	return PlayerAtom._create(atom_id)
+    return PlayerAtom._create(atom_id)
 
 var _session_atom: SessionAtom = null
 
 ## Returns the singleton [SessionAtom] view.
 ## The instance is created on first call and cached for the session lifetime.
 func get_session() -> SessionAtom:
-	if _session_atom == null:
-		var ids: Array = get_atoms(ArchetypeAtomKinds.SESSION)
-		if ids.size() > 0:
-			_session_atom = SessionAtom._create(ids[0])
-	return _session_atom
+    if _session_atom == null:
+        var ids: Array = get_atoms(ArchetypeAtomKinds.SESSION)
+        if ids.size() > 0:
+            _session_atom = SessionAtom._create(ids[0])
+    return _session_atom

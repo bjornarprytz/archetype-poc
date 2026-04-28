@@ -751,7 +751,7 @@
       "Parameters": [
         {
           "Name": "target",
-          "Type": 1,
+          "Type": 0,
           "AtomKindRestriction": null
         },
         {
@@ -801,7 +801,7 @@
       "Parameters": [
         {
           "Name": "target",
-          "Type": 1,
+          "Type": 0,
           "AtomKindRestriction": null
         },
         {
@@ -840,16 +840,149 @@
   "ZoneDefinitions": {
     "hand": {
       "Name": "hand",
-      "StaticProperties": {},
+      "StaticProperties": {
+        "visible": true
+      },
+      "StateMapDeclarations": null
+    },
+    "draw-pile": {
+      "Name": "draw-pile",
+      "StaticProperties": {
+        "visible": false
+      },
+      "StateMapDeclarations": null
+    },
+    "discard-pile": {
+      "Name": "discard-pile",
+      "StaticProperties": {
+        "visible": true
+      },
       "StateMapDeclarations": null
     },
     "board": {
       "Name": "board",
-      "StaticProperties": {},
+      "StaticProperties": {
+        "visible": true
+      },
       "StateMapDeclarations": null
     }
   },
-  "StateBasedRules": [],
+  "StateBasedRules": [
+    {
+      "Name": "alice-loses",
+      "Condition": {
+        "$type": "inv",
+        "KeywordName": "at-most",
+        "Args": [
+          {
+            "$type": "inv",
+            "KeywordName": "get-state",
+            "Args": [
+              {
+                "$type": "inv",
+                "KeywordName": "player-by-name",
+                "Args": [
+                  {
+                    "$type": "lit",
+                    "t": "s",
+                    "v": "alice"
+                  }
+                ]
+              },
+              {
+                "$type": "lit",
+                "t": "s",
+                "v": "health"
+              }
+            ]
+          },
+          {
+            "$type": "lit",
+            "t": "d",
+            "v": 0
+          }
+        ]
+      },
+      "Body": {
+        "Steps": [
+          {
+            "KeywordName": "declare-winner",
+            "ArgNodes": [
+              {
+                "$type": "inv",
+                "KeywordName": "player-by-name",
+                "Args": [
+                  {
+                    "$type": "lit",
+                    "t": "s",
+                    "v": "bob"
+                  }
+                ]
+              }
+            ],
+            "BindTo": null
+          }
+        ]
+      }
+    },
+    {
+      "Name": "bob-loses",
+      "Condition": {
+        "$type": "inv",
+        "KeywordName": "at-most",
+        "Args": [
+          {
+            "$type": "inv",
+            "KeywordName": "get-state",
+            "Args": [
+              {
+                "$type": "inv",
+                "KeywordName": "player-by-name",
+                "Args": [
+                  {
+                    "$type": "lit",
+                    "t": "s",
+                    "v": "bob"
+                  }
+                ]
+              },
+              {
+                "$type": "lit",
+                "t": "s",
+                "v": "health"
+              }
+            ]
+          },
+          {
+            "$type": "lit",
+            "t": "d",
+            "v": 0
+          }
+        ]
+      },
+      "Body": {
+        "Steps": [
+          {
+            "KeywordName": "declare-winner",
+            "ArgNodes": [
+              {
+                "$type": "inv",
+                "KeywordName": "player-by-name",
+                "Args": [
+                  {
+                    "$type": "lit",
+                    "t": "s",
+                    "v": "alice"
+                  }
+                ]
+              }
+            ],
+            "BindTo": null
+          }
+        ]
+      }
+    }
+  ],
   "Phases": [
     {
       "Name": "main",
@@ -861,24 +994,253 @@
   "TriggerResolutionOrder": 0,
   "PlayerDefinitions": {
     "alice": {
-      "StaticProperties": {
-        "health": 20
-      },
-      "StateMapDeclarations": null
+      "StaticProperties": {},
+      "StateMapDeclarations": [
+        {
+          "Name": "health",
+          "FieldType": 0,
+          "TextTemplate": null
+        }
+      ]
     },
     "bob": {
-      "StaticProperties": {
-        "health": 20
-      },
-      "StateMapDeclarations": null
+      "StaticProperties": {},
+      "StateMapDeclarations": [
+        {
+          "Name": "health",
+          "FieldType": 0,
+          "TextTemplate": null
+        }
+      ]
     }
   },
   "InitManifest": {
-    "Zones": [],
-    "Cards": [],
-    "PlayerStates": []
+    "Zones": [
+      {
+        "LocalId": "alice-hand",
+        "Owner": "alice",
+        "Definition": "hand",
+        "Accumulators": {},
+        "Conditions": []
+      },
+      {
+        "LocalId": "alice-draw",
+        "Owner": "alice",
+        "Definition": "draw-pile",
+        "Accumulators": {},
+        "Conditions": []
+      },
+      {
+        "LocalId": "alice-discard",
+        "Owner": "alice",
+        "Definition": "discard-pile",
+        "Accumulators": {},
+        "Conditions": []
+      },
+      {
+        "LocalId": "bob-hand",
+        "Owner": "bob",
+        "Definition": "hand",
+        "Accumulators": {},
+        "Conditions": []
+      },
+      {
+        "LocalId": "bob-draw",
+        "Owner": "bob",
+        "Definition": "draw-pile",
+        "Accumulators": {},
+        "Conditions": []
+      },
+      {
+        "LocalId": "bob-discard",
+        "Owner": "bob",
+        "Definition": "discard-pile",
+        "Accumulators": {},
+        "Conditions": []
+      }
+    ],
+    "Cards": [
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "alice",
+        "ZoneLocalId": "alice-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Swordsman",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      },
+      {
+        "Owner": "bob",
+        "ZoneLocalId": "bob-draw",
+        "Definition": "Healer",
+        "Accumulators": {},
+        "Conditions": [],
+        "LocalId": null
+      }
+    ],
+    "PlayerStates": [
+      {
+        "Player": "alice",
+        "Accumulators": {
+          "health": 20
+        },
+        "Conditions": []
+      },
+      {
+        "Player": "bob",
+        "Accumulators": {
+          "health": 20
+        },
+        "Conditions": []
+      }
+    ]
   },
-  "PlayableZoneNames": null,
+  "PlayableZoneNames": [
+    "hand"
+  ],
   "Id": "archetype-poc",
   "SessionStateMapDeclarations": null
 }

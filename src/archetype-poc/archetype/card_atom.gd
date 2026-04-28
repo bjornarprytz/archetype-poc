@@ -24,3 +24,6 @@ func get_zone_id() -> int:
 func get_owner_id() -> int:
     return ArchetypeInterop.get_atom_owner(_atom_id)
 
+func get_health() -> float:
+    return ArchetypeInterop.get_accumulator(_atom_id, "health")
+
