@@ -2,77 +2,77 @@
   "Name": "core",
   "FormatVersion": 1,
   "Cards": [
-    {
-      "Name": "Swordsman",
-      "StaticProperties": {
-        "cost": 2
-      },
-      "PrimaryEffect": {
-        "Steps": [
-          {
-            "KeywordName": "strike",
-            "ArgNodes": [
-              {
-                "$type": "ref",
-                "Name": "source"
-              },
-              {
-                "$type": "lit",
-                "t": "d",
-                "v": 3
-              }
-            ],
-            "BindTo": null
-          }
-        ]
-      },
-      "AdditionalEffects": [],
-      "StaticEffects": [],
-      "ActivationCondition": null,
-      "Cost": null,
-      "StateMapDeclarations": [
-        {
-          "Name": "health",
-          "FieldType": 0,
-          "TextTemplate": null
-        }
-      ]
-    },
-    {
-      "Name": "Healer",
-      "StaticProperties": {
-        "cost": 1
-      },
-      "PrimaryEffect": {
-        "Steps": [
-          {
-            "KeywordName": "heal",
-            "ArgNodes": [
-              {
-                "$type": "ref",
-                "Name": "source"
-              },
-              {
-                "$type": "lit",
-                "t": "d",
-                "v": 2
-              }
-            ],
-            "BindTo": null
-          }
-        ]
-      },
-      "AdditionalEffects": [],
-      "StaticEffects": [],
-      "ActivationCondition": null,
-      "Cost": null,
-      "StateMapDeclarations": [
-        {
-          "Name": "health",
-          "FieldType": 0,
-          "TextTemplate": null
-        }
-      ]
-    }
+	{
+	  "Name": "Swordsman",
+	  "StaticProperties": {
+		"cost": 2
+	  },
+	  "PrimaryEffect": {
+		"Steps": [
+		  {
+			"KeywordName": "strike",
+			"ArgNodes": [
+			  {
+				"$type": "ref",
+				"Name": "source"
+			  },
+			  {
+				"$type": "lit",
+				"t": "d",
+				"v": 3
+			  }
+			],
+			"BindTo": null
+		  }
+		]
+	  },
+	  "AdditionalEffects": [],
+	  "StaticEffects": [],
+	  "ActivationCondition": null,
+	  "Cost": null,
+	  "StateMapDeclarations": [
+		{
+		  "Name": "health",
+		  "FieldType": 0,
+		  "TextTemplate": null
+		}
+	  ]
+	},
+	{
+	  "Name": "Healer",
+	  "StaticProperties": {
+		"cost": 1
+	  },
+	  "PrimaryEffect": {
+		"Steps": [
+		  {
+			"KeywordName": "heal",
+			"ArgNodes": [
+			  {
+				"$type": "ref",
+				"Name": "source"
+			  },
+			  {
+				"$type": "lit",
+				"t": "d",
+				"v": 2
+			  }
+			],
+			"BindTo": null
+		  }
+		]
+	  },
+	  "AdditionalEffects": [],
+	  "StaticEffects": [],
+	  "ActivationCondition": null,
+	  "Cost": null,
+	  "StateMapDeclarations": [
+		{
+		  "Name": "health",
+		  "FieldType": 0,
+		  "TextTemplate": null
+		}
+	  ]
+	}
   ]
 }

@@ -3,7 +3,11 @@
 ## Use with [method ArchetypeInterop.get_atoms] and [method ArchetypeInterop.get_kind].
 class_name ArchetypeAtomKinds
 
+## Card atoms — instantiated from [CardDefinition].
 const CARD    = 0
+## Zone atoms — instantiated from [ZoneDefinition].
 const ZONE    = 1
+## Player atoms — one per registered player definition.
 const PLAYER  = 2
+## Session atom — singleton; holds turn-number and phase-index.
 const SESSION = 3

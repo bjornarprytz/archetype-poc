@@ -8,18 +8,57 @@ var _atom_id: int
 
 ## Creates a new [PlayerAtom] wrapping [param atom_id].
 static func _create(atom_id: int) -> PlayerAtom:
-    var obj := PlayerAtom.new()
-    obj._atom_id = atom_id
-    return obj
+	var obj := PlayerAtom.new()
+	obj._atom_id = atom_id
+	return obj
 
 ## Returns the raw engine atom ID.
 func get_atom_id() -> int:
-    return _atom_id
+	return _atom_id
+
+## Returns the definition name this atom was instantiated from.
+func get_definition_name() -> String:
+	return ArchetypeInterop.get_definition_name(_atom_id)
+
+## Returns a static property from this atom's definition, or empty string if absent.
+func get_static_property(key: String) -> String:
+	return ArchetypeInterop.get_static_property(_atom_id, key)
+
+## Returns all static property keys defined on this atom's definition.
+func get_static_property_keys() -> Array[String]:
+	return Array(ArchetypeInterop.get_static_property_keys(_atom_id), TYPE_STRING, "", null)
+
+## Returns all accumulators currently set on this atom as [String] → [float].
+func get_accumulators() -> Dictionary:
+	return ArchetypeInterop.get_accumulators(_atom_id)
+
+## Returns the names of all conditions currently active on this atom.
+func get_active_conditions() -> Array[String]:
+	return Array(ArchetypeInterop.get_active_conditions(_atom_id), TYPE_STRING, "", null)
+
+## Returns the property names that have at least one active modifier on this atom.
+func get_modifier_keys() -> Array[String]:
+	return Array(ArchetypeInterop.get_modifier_keys(_atom_id), TYPE_STRING, "", null)
 
 ## Returns the owner player atom ID.
 func get_owner_id() -> int:
-    return ArchetypeInterop.get_atom_owner(_atom_id)
+	return ArchetypeInterop.get_atom_owner(_atom_id)
+
+## Returns all zones owned by this player.
+func get_zones() -> Array[ZoneAtom]:
+	var result: Array[ZoneAtom] = []
+	for id in ArchetypeInterop.get_atoms(ArchetypeAtomKinds.ZONE):
+		if ArchetypeInterop.get_atom_owner(id) == _atom_id:
+			result.append(ZoneAtom._create(id))
+	return result
+
+## Returns all cards owned by this player.
+func get_cards() -> Array[CardAtom]:
+	var result: Array[CardAtom] = []
+	for id in ArchetypeInterop.get_atoms(ArchetypeAtomKinds.CARD):
+		if ArchetypeInterop.get_atom_owner(id) == _atom_id:
+			result.append(CardAtom._create(id))
+	return result
 
 func get_health() -> float:
-    return ArchetypeInterop.get_accumulator(_atom_id, "health")
-
+	return ArchetypeInterop.get_accumulator(_atom_id, "health")

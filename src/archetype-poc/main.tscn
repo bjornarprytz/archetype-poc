@@ -1,11 +1,17 @@
 [gd_scene format=3 uid="uid://c7hepm1wuujy6"]
 
 [ext_resource type="Script" uid="uid://1i83c7gfd20b" path="res://main.gd" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://d25in4aqh7p53" path="res://archetype/ArchetypeNode.cs" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://bu1aaati1r1f0" path="res://archetype/ArchetypeNode.cs" id="2_0xm2m"]
 
 [node name="Archetype" type="Node2D" unique_id=109981001]
 script = ExtResource("1_ig7tw")
 
-[node name="ArchetypeNode" type="Node" parent="." unique_id=1643256339]
+[node name="ArchetypeNode" type="Node" parent="." unique_id=1665777717]
 script = ExtResource("2_0xm2m")
-metadata/_custom_type_script = "uid://d25in4aqh7p53"
+metadata/_custom_type_script = "uid://bu1aaati1r1f0"
+
+[node name="Stuff" type="VBoxContainer" parent="." unique_id=1435306060]
+unique_name_in_owner = true
+offset_top = 1.0
+offset_right = 1152.0
+offset_bottom = 646.0

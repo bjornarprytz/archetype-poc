@@ -217,6 +217,82 @@ public partial class ArchetypeNode : Node
         return result;
     }
 
+    /// <summary>Returns the definition name the atom was instantiated from, or empty string.</summary>
+    public string GetDefinitionName(long atomId) => _stateView?.GetDefinitionName(new AtomId(atomId)) ?? string.Empty;
+
+    /// <summary>Returns a static property value from the atom's definition, serialised to string, or empty string if absent.</summary>
+    public string GetStaticProperty(long atomId, string key) => _stateView?.GetStaticProperty(new AtomId(atomId), key)?.ToString() ?? string.Empty;
+
+    /// <summary>Returns the static property keys defined on the atom's definition.</summary>
+    public Godot.Collections.Array GetStaticPropertyKeys(long atomId)
+    {
+        var result = new Godot.Collections.Array();
+        if (_stateView == null) return result;
+        foreach (var k in _stateView.GetStaticPropertyKeys(new AtomId(atomId)))
+            result.Add(k);
+        return result;
+    }
+
+    /// <summary>Returns all accumulators currently set on the atom as a name→value dictionary.</summary>
+    public Godot.Collections.Dictionary GetAccumulators(long atomId)
+    {
+        var result = new Godot.Collections.Dictionary();
+        if (_stateView == null) return result;
+        foreach (var (k, v) in _stateView.GetAccumulators(new AtomId(atomId)))
+            result[k] = v;
+        return result;
+    }
+
+    /// <summary>Returns the names of all conditions currently active on the atom.</summary>
+    public Godot.Collections.Array GetActiveConditions(long atomId)
+    {
+        var result = new Godot.Collections.Array();
+        if (_stateView == null) return result;
+        foreach (var c in _stateView.GetActiveConditions(new AtomId(atomId)))
+            result.Add(c);
+        return result;
+    }
+
+    /// <summary>Returns the property names that have at least one active modifier on the atom.</summary>
+    public Godot.Collections.Array GetModifierKeys(long atomId)
+    {
+        var result = new Godot.Collections.Array();
+        if (_stateView == null) return result;
+        foreach (var k in _stateView.GetModifierKeys(new AtomId(atomId)))
+            result.Add(k);
+        return result;
+    }
+
+    /// <summary>Returns the name of the current game phase.</summary>
+    public string GetCurrentPhaseName() => _stateView?.GetCurrentPhaseName() ?? string.Empty;
+
+    /// <summary>Returns the names of all registered card definitions.</summary>
+    public Godot.Collections.Array GetCardDefinitionNames()
+    {
+        var result = new Godot.Collections.Array();
+        if (_stateView == null) return result;
+        foreach (var n in _stateView.GetCardDefinitionNames()) result.Add(n);
+        return result;
+    }
+
+    /// <summary>Returns the names of all registered zone definitions.</summary>
+    public Godot.Collections.Array GetZoneDefinitionNames()
+    {
+        var result = new Godot.Collections.Array();
+        if (_stateView == null) return result;
+        foreach (var n in _stateView.GetZoneDefinitionNames()) result.Add(n);
+        return result;
+    }
+
+    /// <summary>Returns the names of all registered keywords.</summary>
+    public Godot.Collections.Array GetKeywordNames()
+    {
+        var result = new Godot.Collections.Array();
+        if (_stateView == null) return result;
+        foreach (var n in _stateView.GetKeywordNames()) result.Add(n);
+        return result;
+    }
+
     // --- InnerStrategy — per-player IPlayerStrategy implementation ---
 
     private sealed class InnerStrategy : IPlayerStrategy

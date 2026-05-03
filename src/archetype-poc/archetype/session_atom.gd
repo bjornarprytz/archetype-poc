@@ -16,3 +16,39 @@ static func _create(atom_id: int) -> SessionAtom:
 func get_atom_id() -> int:
     return _atom_id
 
+## Returns the definition name this atom was instantiated from.
+func get_definition_name() -> String:
+    return ArchetypeInterop.get_definition_name(_atom_id)
+
+## Returns a static property from this atom's definition, or empty string if absent.
+func get_static_property(key: String) -> String:
+    return ArchetypeInterop.get_static_property(_atom_id, key)
+
+## Returns all static property keys defined on this atom's definition.
+func get_static_property_keys() -> Array[String]:
+    return Array(ArchetypeInterop.get_static_property_keys(_atom_id), TYPE_STRING, "", null)
+
+## Returns all accumulators currently set on this atom as [String] → [float].
+func get_accumulators() -> Dictionary:
+    return ArchetypeInterop.get_accumulators(_atom_id)
+
+## Returns the names of all conditions currently active on this atom.
+func get_active_conditions() -> Array[String]:
+    return Array(ArchetypeInterop.get_active_conditions(_atom_id), TYPE_STRING, "", null)
+
+## Returns the property names that have at least one active modifier on this atom.
+func get_modifier_keys() -> Array[String]:
+    return Array(ArchetypeInterop.get_modifier_keys(_atom_id), TYPE_STRING, "", null)
+
+## Returns the current turn number.
+func get_turn_number() -> float:
+    return ArchetypeInterop.get_accumulator(_atom_id, "turn-number")
+
+## Returns the current phase index.
+func get_phase_index() -> float:
+    return ArchetypeInterop.get_accumulator(_atom_id, "phase-index")
+
+## Returns the name of the current phase (e.g. [code]"main"[/code]).
+func get_current_phase_name() -> String:
+    return ArchetypeInterop.get_current_phase_name()
+

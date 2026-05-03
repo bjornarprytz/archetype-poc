@@ -18,12 +18,12 @@ var _node: ArchetypeNode
 ## Registers [param node] and connects its lifecycle signals.
 ## Call this from your main scene's [method Node._ready], then call [method start].
 func register(node: ArchetypeNode) -> void:
-    _node = node
-    _node.ActionRequested.connect(_on_action_requested)
-    _node.ActionResolved.connect(_on_action_resolved)
-    _node.PromptRequested.connect(_on_prompt_requested)
-    _node.GameOver.connect(_on_game_over)
-    _node.GameError.connect(_on_game_error)
+	_node = node
+	_node.ActionRequested.connect(_on_action_requested)
+	_node.ActionResolved.connect(_on_action_resolved)
+	_node.PromptRequested.connect(_on_prompt_requested)
+	_node.GameOver.connect(_on_game_over)
+	_node.GameError.connect(_on_game_error)
 
 ## Emitted when a player must choose an action.
 ## [param player_name] identifies which player is acting.
@@ -45,49 +45,49 @@ signal game_over(winner_name: String)
 signal game_error(message: String)
 
 func _on_action_requested(player_name: String, available: Dictionary) -> void:
-    action_requested.emit(player_name, available)
+	action_requested.emit(player_name, available)
 
 func _on_action_resolved() -> void:
-    action_resolved.emit()
+	action_resolved.emit()
 
 func _on_prompt_requested(player_name: String, prompt_type: String, context: Dictionary) -> void:
-    prompt_requested.emit(player_name, prompt_type, context)
+	prompt_requested.emit(player_name, prompt_type, context)
 
 func _on_game_over(winner_name: String) -> void:
-    game_over.emit(winner_name)
+	game_over.emit(winner_name)
 
 func _on_game_error(message: String) -> void:
-    game_error.emit(message)
+	game_error.emit(message)
 
 ## Starts the game, loading definition and card sets from the generated
 ## [code]res://archetype/[/code] files. Call after [method register].
 ## Pass explicit paths to override the defaults.
 func start(host_manifest: Dictionary = {},
-        definition_path: String = "res://archetype/game_definition.json",
-        card_set_paths: Array = []) -> void:
-    _node.StartGame(host_manifest, definition_path, card_set_paths)
+		definition_path: String = "res://archetype/game_definition.json",
+		card_set_paths: Array = []) -> void:
+	_node.StartGame(host_manifest, definition_path, card_set_paths)
 
 ## Submits a pass action for [param player_name].
 func submit_pass(player_name: String) -> void:
-    _node.SubmitPass(player_name)
+	_node.SubmitPass(player_name)
 
 ## Submits a play-card action for [param player_name].
 ## [param card_atom_id] is the atom ID from [signal action_requested].
 ## [param cost_choices] provides any required cost selections.
 func submit_play_card(player_name: String, card_atom_id: int, cost_choices: Dictionary = {}) -> void:
-    _node.SubmitPlayCard(player_name, card_atom_id, cost_choices)
+	_node.SubmitPlayCard(player_name, card_atom_id, cost_choices)
 
 ## Submits an activate-ability action for [param player_name].
 ## [param source_atom_id] is the atom ID of the source card.
 ## [param effect_name] identifies which ability to activate.
 ## [param cost_choices] provides any required cost selections.
 func submit_activate_ability(player_name: String, source_atom_id: int, effect_name: String, cost_choices: Dictionary = {}) -> void:
-    _node.SubmitActivateAbility(player_name, source_atom_id, effect_name, cost_choices)
+	_node.SubmitActivateAbility(player_name, source_atom_id, effect_name, cost_choices)
 
 ## Submits a response to a pending prompt for [param player_name].
 ## [param response] is a dictionary of chosen values keyed by prompt field name.
 func submit_prompt_response(player_name: String, response: Dictionary) -> void:
-    _node.SubmitPromptResponse(player_name, response)
+	_node.SubmitPromptResponse(player_name, response)
 
 ## Returns the named accumulator value for [param atom_id].
 ## Returns 0.0 before the game starts or after it ends.
@@ -117,25 +117,83 @@ func get_kind(atom_id: int) -> int:                            return _node.GetK
 ## Returns an empty Array before the game starts or after it ends.
 func get_atoms(kind: int) -> Array:                            return _node.GetAtoms(kind)
 
+## Returns the definition name the atom was instantiated from (e.g. [code]"strike"[/code]).
+## Returns an empty string for the session atom or before the game starts.
+func get_definition_name(atom_id: int) -> String:             return _node.GetDefinitionName(atom_id)
+
+## Returns the value of a static property from the atom's definition, serialised to [String].
+## Returns an empty string if [param key] is absent or the atom has no definition.
+func get_static_property(atom_id: int, key: String) -> String: return _node.GetStaticProperty(atom_id, key)
+
+## Returns the static property keys defined on the atom's definition.
+## Returns an empty array before the game starts or if the atom has no definition.
+func get_static_property_keys(atom_id: int) -> Array:          return _node.GetStaticPropertyKeys(atom_id)
+
+## Returns all accumulators currently set on the atom as a [Dictionary] of [String] → [float].
+## Returns an empty dictionary before the game starts or after it ends.
+func get_accumulators(atom_id: int) -> Dictionary:             return _node.GetAccumulators(atom_id)
+
+## Returns the names of all conditions currently active on the atom.
+## Returns an empty array before the game starts or after it ends.
+func get_active_conditions(atom_id: int) -> Array:             return _node.GetActiveConditions(atom_id)
+
+## Returns the property names that have at least one active modifier on the atom.
+## Returns an empty array before the game starts or after it ends.
+func get_modifier_keys(atom_id: int) -> Array:                 return _node.GetModifierKeys(atom_id)
+
+## Returns the name of the current game phase (e.g. [code]"main"[/code]).
+## Returns an empty string before the game starts or if no phases are defined.
+func get_current_phase_name() -> String:                       return _node.GetCurrentPhaseName()
+
+## Returns the names of all card definitions registered in the game.
+func get_card_definition_names() -> Array:                     return _node.GetCardDefinitionNames()
+
+## Returns the names of all zone definitions registered in the game.
+func get_zone_definition_names() -> Array:                     return _node.GetZoneDefinitionNames()
+
+## Returns the names of all keywords registered in the game (built-in and game-creator).
+func get_keyword_names() -> Array:                             return _node.GetKeywordNames()
+
+## Returns all card atoms currently in the game as [Array][[CardAtom]].
+func get_all_cards() -> Array[CardAtom]:
+	var result: Array[CardAtom] = []
+	for id in get_atoms(ArchetypeAtomKinds.CARD):
+		result.append(CardAtom._create(id))
+	return result
+
+## Returns all zone atoms currently in the game as [Array][[ZoneAtom]].
+func get_all_zones() -> Array[ZoneAtom]:
+	var result: Array[ZoneAtom] = []
+	for id in get_atoms(ArchetypeAtomKinds.ZONE):
+		result.append(ZoneAtom._create(id))
+	return result
+
+## Returns all player atoms currently in the game as [Array][[PlayerAtom]].
+func get_all_players() -> Array[PlayerAtom]:
+	var result: Array[PlayerAtom] = []
+	for id in get_atoms(ArchetypeAtomKinds.PLAYER):
+		result.append(PlayerAtom._create(id))
+	return result
+
 ## Returns a [CardAtom] view for [param atom_id].
 func get_card(atom_id: int) -> CardAtom:
-    return CardAtom._create(atom_id)
+	return CardAtom._create(atom_id)
 
 ## Returns a [ZoneAtom] view for [param atom_id].
 func get_zone_atom(atom_id: int) -> ZoneAtom:
-    return ZoneAtom._create(atom_id)
+	return ZoneAtom._create(atom_id)
 
 ## Returns a [PlayerAtom] view for [param atom_id].
 func get_player(atom_id: int) -> PlayerAtom:
-    return PlayerAtom._create(atom_id)
+	return PlayerAtom._create(atom_id)
 
 var _session_atom: SessionAtom = null
 
 ## Returns the singleton [SessionAtom] view.
 ## The instance is created on first call and cached for the session lifetime.
 func get_session() -> SessionAtom:
-    if _session_atom == null:
-        var ids: Array = get_atoms(ArchetypeAtomKinds.SESSION)
-        if ids.size() > 0:
-            _session_atom = SessionAtom._create(ids[0])
-    return _session_atom
+	if _session_atom == null:
+		var ids: Array = get_atoms(ArchetypeAtomKinds.SESSION)
+		if ids.size() > 0:
+			_session_atom = SessionAtom._create(ids[0])
+	return _session_atom
