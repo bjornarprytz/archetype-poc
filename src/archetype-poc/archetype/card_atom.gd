@@ -56,5 +56,12 @@ func get_owner_id() -> int:
 func get_owner() -> PlayerAtom:
 	return PlayerAtom._create(ArchetypeInterop.get_atom_owner(_atom_id))
 
+## Returns the structured render tree for this card's primary effect.
+## Node shape: [code]{"type": "text"|"composite"|"sequence"|"ref", …}[/code].
+## Use [code]type[/code] to switch on node kind; [code]composite[/code] carries
+## [code]summary[/code] (human-readable) and [code]body[/code] (full expansion).
+func get_rules_tree() -> Dictionary:
+	return ArchetypeInterop.get_rules_tree(_atom_id)
+
 func get_health() -> float:
 	return ArchetypeInterop.get_accumulator(_atom_id, "health")

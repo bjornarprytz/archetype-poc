@@ -6,7 +6,7 @@
 [node name="Archetype" type="Node2D" unique_id=109981001]
 script = ExtResource("1_ig7tw")
 
-[node name="ArchetypeNode" type="Node" parent="." unique_id=1665777717]
+[node name="ArchetypeNode" type="Node" parent="." unique_id=1161025807]
 script = ExtResource("2_0xm2m")
 metadata/_custom_type_script = "uid://bu1aaati1r1f0"
 

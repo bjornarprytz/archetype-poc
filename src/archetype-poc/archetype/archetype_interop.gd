@@ -154,6 +154,11 @@ func get_zone_definition_names() -> Array:                     return _node.GetZ
 ## Returns the names of all keywords registered in the game (built-in and game-creator).
 func get_keyword_names() -> Array:                             return _node.GetKeywordNames()
 
+## Returns the structured render tree for the primary effect of [param atom_id] (card atoms only).
+## Node shape: [code]{"type": "text"|"composite"|"sequence"|"ref", …}[/code].
+## Returns an empty [Dictionary] if the atom is not a card or has no definition.
+func get_rules_tree(atom_id: int) -> Dictionary:              return _node.GetRulesTree(atom_id)
+
 ## Returns all card atoms currently in the game as [Array][[CardAtom]].
 func get_all_cards() -> Array[CardAtom]:
 	var result: Array[CardAtom] = []

@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://cl2jybjf3s7xb" path="res://card.gd" id="1_kikvd"]
 
 [node name="Card" type="Control" unique_id=384227464]
-custom_minimum_size = Vector2(40, 60)
+custom_minimum_size = Vector2(160, 240)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 47.0
-offset_bottom = 71.0
+offset_right = 172.0
+offset_bottom = 259.8298
 script = ExtResource("1_kikvd")
 
 [node name="Background" type="ColorRect" parent="." unique_id=204792420]
@@ -24,9 +24,9 @@ modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 3.0
 offset_top = 3.0
-offset_right = 44.0
-offset_bottom = 18.0
-theme_override_font_sizes/normal_font_size = 4
+offset_right = 172.0
+offset_bottom = 61.0
+theme_override_font_sizes/normal_font_size = 16
 fit_content = true
 scroll_active = false
 autowrap_mode = 2
@@ -36,10 +36,10 @@ unique_name_in_owner = true
 modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 3.0
-offset_top = 26.0
-offset_right = 44.0
-offset_bottom = 76.0
-theme_override_font_sizes/normal_font_size = 4
+offset_top = 115.0
+offset_right = 168.0
+offset_bottom = 256.0
+theme_override_font_sizes/normal_font_size = 16
 fit_content = true
 scroll_active = false
 autowrap_mode = 2

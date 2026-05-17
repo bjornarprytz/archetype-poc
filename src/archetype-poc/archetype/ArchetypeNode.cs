@@ -8,6 +8,7 @@ using Godot;
 using Archetype.Build;
 using Archetype.Core;
 using Archetype.Engine;
+using Archetype.Text;
 
 /// <summary>
 /// Generated Godot node that hosts a <c>GameSession</c> and bridges the async
@@ -31,6 +32,7 @@ public partial class ArchetypeNode : Node
     private Task? _runTask;
     private CancellationTokenSource? _cts;
     private GameStateView? _stateView;
+    private TextRenderer? _textRenderer;
 
     // Per-player suspension: one TCS per outstanding SelectAction / RespondToPrompt call.
     private readonly Dictionary<string, TaskCompletionSource<PlayerAction?>> _pendingActions = new();
@@ -66,6 +68,7 @@ public partial class ArchetypeNode : Node
         definition = definition.WithCardSets(cardSets);
 
         _cts = new CancellationTokenSource();
+        _textRenderer = null;
         var builder = GameSession.Create(definition)
             .WithRandomSource(new Archetype.Engine.SeededRandom(GD.Randi()));
 
@@ -291,6 +294,51 @@ public partial class ArchetypeNode : Node
         if (_stateView == null) return result;
         foreach (var n in _stateView.GetKeywordNames()) result.Add(n);
         return result;
+    }
+
+    /// <summary>
+    /// Returns the structured render tree for the primary effect of the given card atom.
+    /// The dictionary encodes the <c>RenderNode</c> tree recursively:
+    /// <c>{"type":"text","text":"…"}</c>,
+    /// <c>{"type":"composite","summary":{…},"body":{…}}</c>,
+    /// <c>{"type":"sequence","items":[…]}</c>,
+    /// <c>{"type":"ref","key":"…","display":"…"}</c>.
+    /// Returns an empty dictionary if the atom is not a card or has no definition.
+    /// </summary>
+    public Godot.Collections.Dictionary GetRulesTree(long atomId)
+    {
+        if (_stateView?.Definition is not { } def) return new Godot.Collections.Dictionary();
+        var defName = _stateView.GetDefinitionName(new AtomId(atomId));
+        if (string.IsNullOrEmpty(defName)) return new Godot.Collections.Dictionary();
+        if (!def.CardDefinitions.TryGetValue(defName, out var cardDef)) return new Godot.Collections.Dictionary();
+        _textRenderer ??= new TextRenderer(def.Keywords);
+        return RenderNodeToGodot(_textRenderer.RenderBlock(cardDef.PrimaryEffect, null, null));
+    }
+
+    private static Godot.Collections.Dictionary RenderNodeToGodot(Archetype.Core.RenderNode node)
+    {
+        switch (node)
+        {
+            case Archetype.Core.TextSpan ts:
+                return new Godot.Collections.Dictionary { ["type"] = "text", ["text"] = ts.Text };
+            case Archetype.Core.RulesRef rr:
+                return new Godot.Collections.Dictionary { ["type"] = "ref", ["key"] = rr.Key, ["display"] = rr.DisplayText };
+            case Archetype.Core.CompositeNode c:
+                return new Godot.Collections.Dictionary
+                {
+                    ["type"]    = "composite",
+                    ["summary"] = RenderNodeToGodot(c.Summary),
+                    ["body"]    = RenderNodeToGodot(c.Body),
+                };
+            case Archetype.Core.SequenceNode s:
+            {
+                var items = new Godot.Collections.Array();
+                foreach (var item in s.Items) items.Add(RenderNodeToGodot(item));
+                return new Godot.Collections.Dictionary { ["type"] = "sequence", ["items"] = items };
+            }
+            default:
+                return new Godot.Collections.Dictionary { ["type"] = "text", ["text"] = string.Empty };
+        }
     }
 
     // --- InnerStrategy — per-player IPlayerStrategy implementation ---
