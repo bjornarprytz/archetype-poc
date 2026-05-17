@@ -153,6 +153,29 @@ var definition = new GameDefinitionBuilder()
         ]))
     .Build();
 
+var payCardCost = new CostDefBuilder()
+    .WithTextTemplate("Pay {cost} stamina.")
+    .WithParam("source", TypeName.Card)
+    .WithBody(new EffectBlockDef([
+        new EffectBlockStep("assert", [
+            new Invocation("at-least",
+                new Invocation("get-state",
+                    new Invocation("owner-of", new ParameterRef("source")),
+                    new Literal("stamina")),
+                new Invocation("get-property", new ParameterRef("source"), new Literal("cost"))),
+            new Literal((double)(int)OnFail.Panic),
+            new Literal((double)(int)NotifyFlag.Off),
+        ]),
+        new EffectBlockStep("modify-accumulator", [
+            new Invocation("owner-of", new ParameterRef("source")),
+            new Literal("stamina"),
+            new Invocation("multiply",
+                new Literal(-1.0),
+                new Invocation("get-property", new ParameterRef("source"), new Literal("cost"))),
+        ]),
+    ]))
+    .Build();
+
 // ── Card set ────────────────────────────────────────────────────────────────
 var coreSet = new CardSet("journey-core", 1, [
     new CardDefinitionBuilder("Walk")
@@ -160,6 +183,7 @@ var coreSet = new CardSet("journey-core", 1, [
         .WithPrimaryEffect(b => b
             .Step("travel", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2))
             .Step("exert",  Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2)))
+        .WithCost(payCardCost)
         .Build(),
 
     new CardDefinitionBuilder("Forage")
@@ -167,6 +191,7 @@ var coreSet = new CardSet("journey-core", 1, [
         .WithPrimaryEffect(b => b
             .Step("forage", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2))
             .Step("exert",  Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(1)))
+        .WithCost(payCardCost)
         .Build(),
 
     new CardDefinitionBuilder("Camp")
@@ -175,12 +200,14 @@ var coreSet = new CardSet("journey-core", 1, [
             .Step("rest", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(3))
             .Step("consume-supplies", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(1))
             .Step("enjoy", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(1)))
+        .WithCost(payCardCost)
         .Build(),
 
     new CardDefinitionBuilder("Scenic View")
         .WithStaticProperty("cost", 0.0)
         .WithPrimaryEffect(b => b
             .Step("enjoy", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2)))
+        .WithCost(payCardCost)
         .Build(),
 ]);
 
