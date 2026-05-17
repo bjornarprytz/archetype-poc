@@ -2,127 +2,185 @@ using Archetype.Build;
 using Archetype.Build.Extensions;
 using Archetype.Core;
 
-// Two-player card combat prototype.
-// Zones (per player): hand, draw-pile, discard-pile, board
-// Keywords: strike (deal damage), heal (restore health)
-// Cards: Swordsman (deal 3 damage to self), Healer (restore 2 health to self)
-// Win condition: first player whose health accumulator drops to 0 loses.
+// Journey — a two-player card game about survival, enjoyment, and nature.
+// Players balance stamina, supplies and morale while travelling toward a destination.
+// First player to reach distance 12 wins. If stamina falls to 0 the traveller collapses.
 
 var definition = new GameDefinitionBuilder()
-    .WithId("archetype-poc")
+    .WithId("journey")
 
-    // ── Zone definitions ────────────────────────────────────────────────────
-    // Instances are created per-player in the InitManifest below.
-    .AddZone("hand",         b => b.WithStaticProperty("visible", true))
-    .AddZone("draw-pile",    b => b.WithStaticProperty("visible", false))
-    .AddZone("discard-pile", b => b.WithStaticProperty("visible", true))
-    .AddZone("board",        b => b.WithStaticProperty("visible", true))
+    // ── Zones (per player) ───────────────────────────────────────────────────
+    .AddZone("hand",    b => b.WithStaticProperty("visible", true))
+    .AddZone("deck",    b => b.WithStaticProperty("visible", false))
+    .AddZone("discard", b => b.WithStaticProperty("visible", true))
+    .AddZone("camp",    b => b.WithStaticProperty("visible", true))
 
-    // ── Turn structure ──────────────────────────────────────────────────────
-    .AddPhase("main", _ => { })
+    // ── Turn structure ───────────────────────────────────────────────────────
+    .AddPhase("day", _ => { })
 
-    // ── Custom keywords ─────────────────────────────────────────────────────
-    .RegisterKeyword("strike", b => b
-        .WithParam("target", TypeName.Atom)
-        .WithParam("power",  TypeName.Number)
-        .WithReturnType(TypeName.Number)
+    // ── Journey keywords ─────────────────────────────────────────────────────
+    .RegisterKeyword("travel", b => b
+        .WithParam("player", TypeName.Player)
+        .WithParam("amount", TypeName.Number)
+        .WithReturnType(TypeName.Void)
         .WithBody(Kw.ModifyAccumulator(
-            Kw.Param("target"),
-            Kw.Str("health"),
-            Kw.Multiply(Kw.Param("power"), Kw.Num(-1))))
-        .WithTextTemplate("Deal {power} damage to {target}"))
+            Kw.Param("player"), Kw.Str("distance"), Kw.Param("amount")))
+        .WithTextTemplate("{player} travels {amount} miles."))
 
-    .RegisterKeyword("heal", b => b
-        .WithParam("target", TypeName.Atom)
+    .RegisterKeyword("exert", b => b
+        .WithParam("player", TypeName.Player)
         .WithParam("amount", TypeName.Number)
         .WithReturnType(TypeName.Number)
         .WithBody(Kw.ModifyAccumulator(
-            Kw.Param("target"),
-            Kw.Str("health"),
-            Kw.Param("amount")))
-        .WithTextTemplate("Restore {amount} health to {target}"))
+            Kw.Param("player"), Kw.Str("stamina"), Kw.Multiply(Kw.Param("amount"), Kw.Num(-1))))
+        .WithTextTemplate("{player} loses {amount} stamina."))
 
-    // ── Win conditions ──────────────────────────────────────────────────────
+    .RegisterKeyword("forage", b => b
+        .WithParam("player", TypeName.Player)
+        .WithParam("amount", TypeName.Number)
+        .WithReturnType(TypeName.Number)
+        .WithBody(Kw.ModifyAccumulator(
+            Kw.Param("player"), Kw.Str("supplies"), Kw.Param("amount")))
+        .WithTextTemplate("{player} forages and gains {amount} supplies."))
+
+    .RegisterKeyword("rest", b => b
+        .WithParam("player", TypeName.Player)
+        .WithParam("amount", TypeName.Number)
+        .WithReturnType(TypeName.Number)
+        .WithBody(Kw.ModifyAccumulator(
+            Kw.Param("player"), Kw.Str("stamina"), Kw.Param("amount")))
+        .WithTextTemplate("{player} rests and recovers {amount} stamina."))
+
+    .RegisterKeyword("enjoy", b => b
+        .WithParam("player", TypeName.Player)
+        .WithParam("amount", TypeName.Number)
+        .WithReturnType(TypeName.Number)
+        .WithBody(Kw.ModifyAccumulator(
+            Kw.Param("player"), Kw.Str("morale"), Kw.Param("amount")))
+        .WithTextTemplate("{player} enjoys nature and gains {amount} morale."))
+
+    .RegisterKeyword("consume-supplies", b => b
+        .WithParam("player", TypeName.Player)
+        .WithParam("amount", TypeName.Number)
+        .WithReturnType(TypeName.Number)
+        .WithBody(Kw.ModifyAccumulator(
+            Kw.Param("player"), Kw.Str("supplies"), Kw.Multiply(Kw.Param("amount"), Kw.Num(-1))))
+        .WithTextTemplate("{player} consumes {amount} supplies."))
+
+    // ── State-based rules (collapse & arrival) ───────────────────────────────
     .AddStateBasedRule(new StateBasedRule(
-        "alice-loses",
-        Kw.AtMost(
-            Kw.GetState(Kw.PlayerByName(Kw.Str("alice")), Kw.Str("health")),
-            Kw.Num(0)),
+        "alice-collapses",
+        Kw.AtMost(Kw.GetState(Kw.PlayerByName(Kw.Str("alice")), Kw.Str("stamina")), Kw.Num(0)),
         new EffectBlockDef([
             new EffectBlockStep("declare-winner", [Kw.PlayerByName(Kw.Str("bob"))]),
         ])))
 
     .AddStateBasedRule(new StateBasedRule(
-        "bob-loses",
-        Kw.AtMost(
-            Kw.GetState(Kw.PlayerByName(Kw.Str("bob")), Kw.Str("health")),
-            Kw.Num(0)),
+        "bob-collapses",
+        Kw.AtMost(Kw.GetState(Kw.PlayerByName(Kw.Str("bob")), Kw.Str("stamina")), Kw.Num(0)),
         new EffectBlockDef([
             new EffectBlockStep("declare-winner", [Kw.PlayerByName(Kw.Str("alice"))]),
         ])))
 
-    // ── Player definitions ──────────────────────────────────────────────────
-    // health is an accumulator; starting value is set via PlayerStateSpec below.
-    .AddPlayer("alice", b => b.WithStateField("health", StateFieldType.Number))
-    .AddPlayer("bob",   b => b.WithStateField("health", StateFieldType.Number))
+    .AddStateBasedRule(new StateBasedRule(
+        "alice-arrives",
+        Kw.AtLeast(Kw.GetState(Kw.PlayerByName(Kw.Str("alice")), Kw.Str("distance")), Kw.Num(12)),
+        new EffectBlockDef([
+            new EffectBlockStep("declare-winner", [Kw.PlayerByName(Kw.Str("alice"))]),
+        ])))
 
-    // Cards may only be played from hand.
+    .AddStateBasedRule(new StateBasedRule(
+        "bob-arrives",
+        Kw.AtLeast(Kw.GetState(Kw.PlayerByName(Kw.Str("bob")), Kw.Str("distance")), Kw.Num(12)),
+        new EffectBlockDef([
+            new EffectBlockStep("declare-winner", [Kw.PlayerByName(Kw.Str("bob"))]),
+        ])))
+
+    // ── Player definitions ───────────────────────────────────────────────────
+    .AddPlayer("alice", b => b
+        .WithStateField("stamina", StateFieldType.Number)
+        .WithStateField("morale", StateFieldType.Number)
+        .WithStateField("supplies", StateFieldType.Number)
+        .WithStateField("distance", StateFieldType.Number))
+
+    .AddPlayer("bob", b => b
+        .WithStateField("stamina", StateFieldType.Number)
+        .WithStateField("morale", StateFieldType.Number)
+        .WithStateField("supplies", StateFieldType.Number)
+        .WithStateField("distance", StateFieldType.Number))
+
     .WithPlayableZones("hand")
 
-    // ── Initial game state ──────────────────────────────────────────────────
+    // ── Initial state ───────────────────────────────────────────────────────
     .WithInitManifest(new InitManifest(
         Zones: [
-            new ZoneSpec("alice-hand",    "alice", "hand",         new Dictionary<string, double>(), []),
-            new ZoneSpec("alice-draw",    "alice", "draw-pile",    new Dictionary<string, double>(), []),
-            new ZoneSpec("alice-discard", "alice", "discard-pile", new Dictionary<string, double>(), []),
-            new ZoneSpec("bob-hand",      "bob",   "hand",         new Dictionary<string, double>(), []),
-            new ZoneSpec("bob-draw",      "bob",   "draw-pile",    new Dictionary<string, double>(), []),
-            new ZoneSpec("bob-discard",   "bob",   "discard-pile", new Dictionary<string, double>(), []),
+            new ZoneSpec("alice-hand",    "alice", "hand",   new Dictionary<string, double>(), []),
+            new ZoneSpec("alice-deck",    "alice", "deck",   new Dictionary<string, double>(), []),
+            new ZoneSpec("alice-discard", "alice", "discard", new Dictionary<string, double>(), []),
+            new ZoneSpec("alice-camp",    "alice", "camp",   new Dictionary<string, double>(), []),
+            new ZoneSpec("bob-hand",      "bob",   "hand",   new Dictionary<string, double>(), []),
+            new ZoneSpec("bob-deck",      "bob",   "deck",   new Dictionary<string, double>(), []),
+            new ZoneSpec("bob-discard",   "bob",   "discard", new Dictionary<string, double>(), []),
+            new ZoneSpec("bob-camp",      "bob",   "camp",   new Dictionary<string, double>(), []),
         ],
         Cards: [
-            // Alice: 5 Swordsmen + 5 Healers in draw pile
-            new CardSpec("alice", "alice-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("alice", "alice-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            // Bob: same deck
-            new CardSpec("bob", "bob-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Swordsman", new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Healer",    new Dictionary<string, double>(), [], null),
-            new CardSpec("bob", "bob-draw", "Healer",    new Dictionary<string, double>(), [], null),
+            // Alice deck
+            new CardSpec("alice", "alice-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Forage", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Forage", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Forage", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Camp", new Dictionary<string, double>(), [], null),
+            new CardSpec("alice", "alice-deck", "Scenic View", new Dictionary<string, double>(), [], null),
+            // Bob deck
+            new CardSpec("bob", "bob-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Walk", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Forage", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Forage", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Forage", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Camp", new Dictionary<string, double>(), [], null),
+            new CardSpec("bob", "bob-deck", "Scenic View", new Dictionary<string, double>(), [], null),
         ],
         PlayerStates: [
-            new PlayerStateSpec("alice", new Dictionary<string, double> { ["health"] = 20.0 }, []),
-            new PlayerStateSpec("bob",   new Dictionary<string, double> { ["health"] = 20.0 }, []),
+            new PlayerStateSpec("alice", new Dictionary<string, double> { ["stamina"] = 10.0, ["morale"] = 0.0, ["supplies"] = 3.0, ["distance"] = 0.0 }, []),
+            new PlayerStateSpec("bob",   new Dictionary<string, double> { ["stamina"] = 10.0, ["morale"] = 0.0, ["supplies"] = 3.0, ["distance"] = 0.0 }, []),
         ]))
     .Build();
 
 // ── Card set ────────────────────────────────────────────────────────────────
-var coreSet = new CardSet("core", 1, [
-    new CardDefinitionBuilder("Swordsman")
-        .WithStaticProperty("cost",   2.0)
-        .WithStateField("health", StateFieldType.Number)
+var coreSet = new CardSet("journey-core", 1, [
+    new CardDefinitionBuilder("Walk")
+        .WithStaticProperty("cost", 1.0)
         .WithPrimaryEffect(b => b
-            .Step("strike", Kw.Param("source"), Kw.Num(3)))
+            .Step("travel", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2))
+            .Step("exert",  Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2)))
         .Build(),
 
-    new CardDefinitionBuilder("Healer")
-        .WithStaticProperty("cost",   1.0)
-        .WithStateField("health", StateFieldType.Number)
+    new CardDefinitionBuilder("Forage")
+        .WithStaticProperty("cost", 1.0)
         .WithPrimaryEffect(b => b
-            .Step("heal", Kw.Param("source"), Kw.Num(2)))
+            .Step("forage", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2))
+            .Step("exert",  Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(1)))
+        .Build(),
+
+    new CardDefinitionBuilder("Camp")
+        .WithStaticProperty("cost", 1.0)
+        .WithPrimaryEffect(b => b
+            .Step("rest", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(3))
+            .Step("consume-supplies", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(1))
+            .Step("enjoy", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(1)))
+        .Build(),
+
+    new CardDefinitionBuilder("Scenic View")
+        .WithStaticProperty("cost", 0.0)
+        .WithPrimaryEffect(b => b
+            .Step("enjoy", Kw.Invoke("owner-of", Kw.Param("source")), Kw.Num(2)))
         .Build(),
 ]);
 
